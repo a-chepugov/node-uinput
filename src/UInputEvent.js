@@ -1,8 +1,10 @@
 import ref from 'ref-napi';
 import Struct from 'ref-struct-napi';
+
 import libc from './lib/libc.js';
+
 import * as UI from './constants/uinput.js';
-import * as EVENT_CODES from './constants/input-event-codes.js';
+import * as INPUT_EVENT_CODES from './constants/input-event-codes.js';
 
 // Типы
 const int32 = ref.types.int32;
@@ -23,23 +25,24 @@ const InputEventStruct = Struct({
 });
 
 const UI_SET_BITS = {
-  key: UI.UI_SET_KEYBIT,
-	rel: UI.UI_SET_RELBIT,
-  abs: UI.UI_SET_ABSBIT,
-  msc: UI.UI_SET_MSCBIT,
-  led: UI.UI_SET_LEDBIT,
-  snd: UI.UI_SET_SNDBIT,
-  sw : UI.UI_SET_SWBIT,
+  KEY: UI.UI_SET_KEYBIT,
+	REL: UI.UI_SET_RELBIT,
+  ABS: UI.UI_SET_ABSBIT,
+  MSC: UI.UI_SET_MSCBIT,
+  LED: UI.UI_SET_LEDBIT,
+  SND: UI.UI_SET_SNDBIT,
+  SW : UI.UI_SET_SWBIT,
 };
 
 const TYPES = {
-  key: EVENT_CODES.EV.EV_KEY,
-	rel: EVENT_CODES.EV.EV_REL,
-  abs: EVENT_CODES.EV.EV_ABS,
-  msc: EVENT_CODES.EV.EV_MSC,
-  led: EVENT_CODES.EV.EV_LED,
-  snd: EVENT_CODES.EV.EV_SND,
-  sw : EVENT_CODES.EV.EV_SW,
+  SYN: INPUT_EVENT_CODES.EV.EV_SYN,
+  KEY: INPUT_EVENT_CODES.EV.EV_KEY,
+	REL: INPUT_EVENT_CODES.EV.EV_REL,
+  ABS: INPUT_EVENT_CODES.EV.EV_ABS,
+  MSC: INPUT_EVENT_CODES.EV.EV_MSC,
+  LED: INPUT_EVENT_CODES.EV.EV_LED,
+  SND: INPUT_EVENT_CODES.EV.EV_SND,
+  SW : INPUT_EVENT_CODES.EV.EV_SW,
 };
 
 const TYPE_IDS = Object.fromEntries(Object
@@ -47,14 +50,14 @@ const TYPE_IDS = Object.fromEntries(Object
   .map(([k, v]) => [v, k]));
 
 const EVENTS = {
-  syn: EVENT_CODES.SYN,
-  key: EVENT_CODES.KEY,
-	rel: EVENT_CODES.REL,
-  abs: EVENT_CODES.ABS,
-  msc: EVENT_CODES.MSC,
-  led: EVENT_CODES.LED,
-  snd: EVENT_CODES.SND,
-  sw : EVENT_CODES.SW,
+  SYN: INPUT_EVENT_CODES.SYN,
+  KEY: INPUT_EVENT_CODES.KEY,
+	REL: INPUT_EVENT_CODES.REL,
+  ABS: INPUT_EVENT_CODES.ABS,
+  MSC: INPUT_EVENT_CODES.MSC,
+  LED: INPUT_EVENT_CODES.LED,
+  SND: INPUT_EVENT_CODES.SND,
+  SW : INPUT_EVENT_CODES.SW,
 };
 
 class UInputEvent {
