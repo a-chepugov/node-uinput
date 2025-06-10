@@ -1,4 +1,3 @@
-import { EV, KEY, REL } from './constants/input-event-codes.js';
 import UInput from './UInput.js';
 
 const T = UInput.Event.TYPES;
@@ -6,8 +5,6 @@ const E = UInput.Event.EVENTS;
 
 class Device {
 	constructor(name, events) {
-		console.log(`DBG:presets.js:9>`, name, events);
-
 		const uinput = new UInput();
 
 		Object
@@ -33,27 +30,27 @@ class Device {
 }
 
 class Mouse {
-	constructor(name = 'mouse') {
+	constructor(name = 'virtual-mouse') {
 		const device = new Device(name, {
-			[T.key]: [
-				E.key.BTN_LEFT,
-				E.key.BTN_RIGHT,
-				E.key.BTN_MIDDLE,
-				E.key.BTN_SIDE,
-				E.key.BTN_EXTRA,
-				E.key.BTN_FORWARD,
-				E.key.BTN_BACK,
+			[T.KEY]: [
+				E.KEY.BTN_LEFT,
+				E.KEY.BTN_RIGHT,
+				E.KEY.BTN_MIDDLE,
+				E.KEY.BTN_SIDE,
+				E.KEY.BTN_EXTRA,
+				E.KEY.BTN_FORWARD,
+				E.KEY.BTN_BACK,
 			],
-			[T.rel]: [
-				E.rel.REL_X,
-				E.rel.REL_Y,
+			[T.REL]: [
+				E.REL.REL_X,
+				E.REL.REL_Y,
+        E.REL.REL_WHEEL,
+        E.REL.REL_HWHEEL,
 			],
 		})
 
 		this.d = device;
 	}
-
-
 }
 
 
@@ -63,8 +60,10 @@ const main = async () => {
 	const m = new Mouse();
 
 	await sleep(500);
-	m.d.uinput.Event.emit(T.key, E.key.BTN_LEFT, 1); // нажать
-	m.d.uinput.Event.emit(T.syn, E.syn.SYN_REPORT, 0);
+  console.log(`DBG:presets.js:68=---------------------------->`, );
+
+  m.d.uinput.act(T.KEY, E.KEY.BTN_LEFT, 1);
+  m.d.uinput.act(T.KEY, E.KEY.BTN_LEFT, 0);
 
 	await sleep(200);
 	m.d.destructor();
