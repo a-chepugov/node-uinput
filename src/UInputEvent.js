@@ -3,7 +3,7 @@ import Struct from 'ref-struct-napi';
 
 import libc from './lib/libc.js';
 
-import * as UI from './constants/uinput.js';
+import * as UINPUT from './constants/uinput.js';
 import * as INPUT_EVENT_CODES from './constants/input-event-codes.js';
 
 // Типы
@@ -24,16 +24,22 @@ const InputEventStruct = Struct({
 	value: int32,
 });
 
+/**
+ * @enum {number}
+ */
 const UI_SET_BITS = {
-  KEY: UI.UI_SET_KEYBIT,
-	REL: UI.UI_SET_RELBIT,
-  ABS: UI.UI_SET_ABSBIT,
-  MSC: UI.UI_SET_MSCBIT,
-  LED: UI.UI_SET_LEDBIT,
-  SND: UI.UI_SET_SNDBIT,
-  SW : UI.UI_SET_SWBIT,
+  KEY: UINPUT.UI_SET_KEYBIT,
+	REL: UINPUT.UI_SET_RELBIT,
+  ABS: UINPUT.UI_SET_ABSBIT,
+  MSC: UINPUT.UI_SET_MSCBIT,
+  LED: UINPUT.UI_SET_LEDBIT,
+  SND: UINPUT.UI_SET_SNDBIT,
+  SW : UINPUT.UI_SET_SWBIT,
 };
 
+/**
+ * @enum {number}
+ */
 const TYPES = {
   SYN: INPUT_EVENT_CODES.EV.EV_SYN,
   KEY: INPUT_EVENT_CODES.EV.EV_KEY,
@@ -49,6 +55,9 @@ const TYPE_IDS = Object.fromEntries(Object
   .entries(TYPES)
   .map(([k, v]) => [v, k]));
 
+/**
+ * @enum {number}
+ */
 const EVENTS = {
   SYN: INPUT_EVENT_CODES.SYN,
   KEY: INPUT_EVENT_CODES.KEY,
@@ -60,15 +69,27 @@ const EVENTS = {
   SW : INPUT_EVENT_CODES.SW,
 };
 
+
 class UInputEvent {
   constructor(fd) {
     this.fd = fd;
   }
 
+  /**
+   * @param {TYPES} typeId
+   */
   type(typeId) {
-    return libc.ioctl(this.fd, UI.UI_SET_EVBIT, typeId);
+    if(!typeId in TYPE_IDS) {
+      throw new Error('unknown type id ' + typeId);
+    }
+
+    return libc.ioctl(this.fd, UINPUT.UI_SET_EVBIT, typeId);
   }
 
+  /**
+   * @param {TYPES} typeId
+   * @param {EVENTS} eventId
+   */
   event(typeId, eventId) {
     if(!typeId in TYPE_IDS) {
       throw new Error('unknown type id ' + typeId);
@@ -83,6 +104,11 @@ class UInputEvent {
     return libc.ioctl(this.fd, typeSetBit, eventId);
 	}
 
+  /**
+   * @param {TYPES} typeId
+   * @param {EVENTS} eventId
+   * @param {number} value
+   */
   emit(typeId, eventId, value) {
     const ev = UInputEvent.build(typeId, eventId, value);
 		return libc.write(this.fd, ev.ref(), InputEventStruct.size);
