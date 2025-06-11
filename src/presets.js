@@ -17,12 +17,22 @@ class Device {
 						})
 			})
 
-		uinput.Device.register(UInput.Device.build());
-		uinput.Device.create();
+		uinput.Device.register(UInput.Device.build(name));
+		const rc = uinput.Device.create();
   	this.uinput = uinput;
 	}
 
-	destructor() {
+  act(event, value) {
+    return this.uinput.act(event[0], event[1], value);
+  }
+
+  frame(data) {
+    return this.uinput.frame(
+      data.map(([event, value]) => [event[0], event[1], value])
+   );
+  }
+
+  destructor() {
 		this.uinput.Device.destroy();
 		this.uinput.close();
 	}
@@ -30,6 +40,32 @@ class Device {
 }
 
 class Mouse {
+  static EVENTS = {
+      BTN_LEFT:
+        [T.KEY,	E.KEY.BTN_LEFT],
+      BTN_RIGHT:
+        [T.KEY,	E.KEY.BTN_RIGHT],
+      BTN_MIDDLE:
+        [T.KEY,	E.KEY.BTN_MIDDLE],
+      BTN_SIDE:
+        [T.KEY,	E.KEY.BTN_SIDE],
+      BTN_EXTRA:
+        [T.KEY,	E.KEY.BTN_EXTRA],
+      BTN_FORWARD:
+        [T.KEY,	E.KEY.BTN_FORWARD],
+      BTN_BACK:
+        [T.KEY,	E.KEY.BTN_BACK],
+
+      REL_X:
+		  	[T.REL,	E.REL.REL_X],
+      REL_Y:
+	  		[T.REL,	E.REL.REL_Y],
+      REL_WHEEL:
+        [T.REL, E.REL.REL_WHEEL],
+      REL_HWHEEL:
+        [T.REL, E.REL.REL_HWHEEL],
+		}
+
 	constructor(name = 'virtual-mouse') {
 		const device = new Device(name, {
 			[T.KEY]: [
@@ -62,12 +98,15 @@ const main = async () => {
 	await sleep(500);
   console.log(`DBG:presets.js:68=---------------------------->`, );
 
-  m.d.uinput.act(T.KEY, E.KEY.BTN_LEFT, 1);
-  m.d.uinput.act(T.KEY, E.KEY.BTN_LEFT, 0);
+  m.d.act(Mouse.EVENTS.BTN_LEFT, 1);
+  m.d.act(Mouse.EVENTS.BTN_LEFT, 0);
+  m.d.frame([
+    [Mouse.EVENTS.REL_X, 10],
+    [Mouse.EVENTS.REL_Y, 10],
+  ]);
 
-	await sleep(200);
+	await sleep(10205);
 	m.d.destructor();
 }
 
 main();
-
