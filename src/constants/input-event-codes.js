@@ -1,6 +1,6 @@
 /* include/uapi/linux/input-event-codes.h */
 
-export * as INPUT from './input-event-codes/input.js';
+export * as PROP from './input-event-codes/prop.js';
 
 export * as EV from './input-event-codes/ev.js';
 
