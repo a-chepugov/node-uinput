@@ -16,7 +16,7 @@ indent_style = space
 indent_style = space
 
 [*.{js,cjs,mjs,ts,ats}]
-indent_style = space
+indent_style = tab
 
 [*.py]
 indent_style = space
