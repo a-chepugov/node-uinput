@@ -29,6 +29,7 @@ const InputEventStruct = Struct({
  */
 const UI_SET_BITS = {
 	KEY: UINPUT.UI_SET_KEYBIT,
+	KEY: UINPUT.UI_SET_KEYBIT,
 	REL: UINPUT.UI_SET_RELBIT,
 	ABS: UINPUT.UI_SET_ABSBIT,
 	MSC: UINPUT.UI_SET_MSCBIT,
@@ -112,7 +113,6 @@ class UInputEvent {
 	 * @param {number} value
 	 */
 	emit(typeId, eventId, value) {
-		console.log(`DBG:UInputEvent.js:115>`, {typeId, eventId, value});
 		const ev = UInputEvent.build(typeId, eventId, value);
 		return libc.write(this.fd, ev.ref(), InputEventStruct.size);
 	}

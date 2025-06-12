@@ -15,7 +15,6 @@ export const UI_SET_PHYS = 0x8008556c;
 export const UI_SET_SWBIT = 0x4004556d;
 export const UI_SET_PROPBIT = 0x4004556e;
 
-
 /* ioctl */
 export const UI_DEV_CREATE = 0x5501;
 export const UI_DEV_DESTROY = 0x5502;
