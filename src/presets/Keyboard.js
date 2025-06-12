@@ -251,8 +251,8 @@ const EVENTS = {
 	}
 
 class Keyboard extends Device {
-	constructor(name = 'virtual-keyboard') {
-		super(name, EVENTS);
+	constructor(name = 'node-virtual-keyboard') {
+		super(EVENTS, name);
 	}
 
 	static EVENTS = EVENTS;

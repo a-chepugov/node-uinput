@@ -99,8 +99,8 @@ const EVENTS = {
 }
 
 class Media extends Device {
-	constructor(name = 'virtual-media-keys<F24>1') {
-		super(name, EVENTS);
+	constructor(name = 'node-virtual-media-keys') {
+		super(EVENTS, name);
 	}
 
 	static EVENTS = EVENTS;

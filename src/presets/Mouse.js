@@ -36,8 +36,8 @@ const EVENTS = {
 }
 
 class Mouse extends Device {
-	constructor(name = 'virtual-mouse') {
-		super(name, EVENTS);
+	constructor(name = 'node-virtual-mouse') {
+		super(EVENTS, name);
 	}
 
 	static EVENTS = EVENTS;

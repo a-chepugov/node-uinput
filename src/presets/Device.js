@@ -4,15 +4,11 @@ import UInput from '../UInput.js';
 
 class Device {
 	/**
-	 * @param {string} name
 	 * @param {{ [key: string]: IEvent }} events
+	 * @param {string} name
+	 * @param {string} name
 	 */
-	constructor(name, events, ) {
-
-		console.log(`DBG:Device.js:12=========>`);
-		console.dir(arguments, { color: true, showHidden: false, depth: null });
-		console.log(`DBG:Device.js:14=========>`);
-
+	constructor(events, name, specs) {
 		const uinput = new UInput();
 
 		Object
@@ -24,9 +20,7 @@ class Device {
 
 		uinput.Device.register(UInput.Device.build(
 			name,
-			undefined,
-
-
+			specs,
 		));
 		uinput.Device.create();
 		this.uinput = uinput;

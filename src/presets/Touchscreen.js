@@ -4,19 +4,7 @@ import Device from './Device.js';
 /* @typedef {import('./Device.js').IEvent} IEvent */
 
 const T = UInput.Event.TYPES;
-const { KEY, ABS, REL } = UInput.Event.EVENTS;
-
-
-
-
-
-
-
-
-
-
-
-
+const { KEY, ABS } = UInput.Event.EVENTS;
 
 /**
  * @enum {IEvent}
@@ -29,51 +17,29 @@ const EVENTS = {
 
 	BTN_TOUCH:
 		[T.KEY, KEY.BTN_TOUCH],
-//	BTN_TOOL_FINGER:
-//		[T.KEY, KEY.BTN_TOOL_FINGER],
-//	BTN_TOOL_DOUBLETAP:
-//		[T.KEY, KEY.BTN_TOOL_DOUBLETAP],
-//	BTN_TOOL_TRIPLETAP:
-//		[T.KEY, KEY.BTN_TOOL_TRIPLETAP],
-//	BTN_TOOL_QUADTAP:
-//		[T.KEY, KEY.BTN_TOOL_QUADTAP],
-//	BTN_TOOL_QUINTTAP:
-//		[T.KEY, KEY.BTN_TOOL_QUINTTAP],
-//	BTN_TOOL_PEN:
-//		[T.KEY, KEY.BTN_TOOL_PEN],
-
-//	BTN_LEFT:
-//		[T.KEY,	KEY.BTN_LEFT],
-//	BTN_RIGHT:
-//		[T.KEY,	KEY.BTN_RIGHT],
-//	BTN_MIDDLE:
-//		[T.KEY,	KEY.BTN_MIDDLE],
-//	BTN_SIDE:
-//		[T.KEY,	KEY.BTN_SIDE],
-//	BTN_EXTRA:
-//		[T.KEY,	KEY.BTN_EXTRA],
-//	BTN_FORWARD:
-//		[T.KEY,	KEY.BTN_FORWARD],
-//	BTN_BACK:
-//		[T.KEY,	KEY.BTN_BACK],
-//
-//	REL_X:
-//		[T.REL,	REL.REL_X],
-//	REL_Y:
-//		[T.REL,	REL.REL_Y],
-	REL_WHEEL:
-		[T.REL, REL.REL_WHEEL],
-	REL_HWHEEL:
-		[T.REL, REL.REL_HWHEEL],
+	BTN_TOOL_DOUBLETAP:
+		[T.KEY, KEY.BTN_TOOL_DOUBLETAP],
+	BTN_TOOL_TRIPLETAP:
+		[T.KEY, KEY.BTN_TOOL_TRIPLETAP],
+	BTN_TOOL_QUADTAP:
+		[T.KEY, KEY.BTN_TOOL_QUADTAP],
+	BTN_TOOL_QUINTTAP:
+		[T.KEY, KEY.BTN_TOOL_QUINTTAP],
 }
 
 class Touchscreen extends Device {
-	constructor(name = 'virtual-touchscreen') {
-		super(name, EVENTS);
+	constructor(name = 'node-virtual-touchscreen') {
+		const specs = {
+			absmin: [],
+			absmax: [],
+		};
 
-		this.uinput.config(UInput.Event.UI_SET_BITS.PROP, UInput.Event.EVENTS.PROP.INPUT_PROP_DIRECT);
-//		this.uinput.config(UInput.Event.UI_SET_BITS.PROP, UInput.Event.EVENTS.PROP.INPUT_PROP_BUTTONPAD);
+		specs.absmin[ABS.ABS_X] = 0;
+		specs.absmax[ABS.ABS_X] = 960;
+		specs.absmin[ABS.ABS_Y] = 0;
+		specs.absmax[ABS.ABS_Y] = 720;
 
+		super(EVENTS, name, specs);
 	}
 
 	static EVENTS = EVENTS;
