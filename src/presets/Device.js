@@ -1,12 +1,28 @@
-import UInput from '../UInput.js';
+import UInput from '../models/UInput.js';
 
-/** @typedef {[UInput.Event.TYPES, number]} IEvent */
+/** @typedef {import('../constants/input-event-codes.js').TYPE} TYPE } */
+/** @typedef {import('../constants/input-event-codes.js').CODE} CODE } */
 
+/**
+ * @typedef {import('../models/UInputDevice.js').UIDevSpecs} UIDevSpecs
+ */
+
+/** @typedef {[TYPE, CODE]} Event */
+
+/** @typedef {['raw', number, number]} RawOptionTuple */
+/** @typedef {['event-type', TYPE]} EventTypeOptionTuple */
+/** @typedef {['event', TYPE, CODE]} EventOptionTuple */
+
+/** @typedef {RawOptionTuple | EventTypeOptionTuple | EventOptionTuple} OptionTuple */
+
+/**
+ * @description virtual device builder
+ */
 class Device {
 	/**
-	 * @param {} options
+	 * @param {Array<[string, number, number] | [string, number]>} options
 	 * @param {string} name
-	 * @param {} specs
+	 * @param {UIDevSpecs} [specs]
 	 */
 	constructor(options, name, specs) {
 		const uinput = new UInput();
@@ -14,22 +30,22 @@ class Device {
 
 		this.#setup(options);
 
-		uinput.device.register(UInput.Device.build(name, specs));
+		uinput.device.register(name, specs);
 		uinput.device.create();
 	}
 
 	/**
-	 * @param {IEvent} event
+	 * @param {Event} event
 	 * @param {number} value
 	 */
-	act(event, value) {
+	act = (event, value) => {
 		return this.uinput.act(event[0], event[1], value);
 	}
 
 	/**
-	 * @param {Array<[IEvent, number]>} data
+	 * @param {Array<[Event, number]>} list
 	 */
-	frame(list) {
+	frame = (list) => {
 		return this.uinput.frame(list.map(([event, data]) => [event[0], event[1], data]));
 	}
 
@@ -38,19 +54,25 @@ class Device {
 		return this.uinput.close();
 	}
 
+	/**
+	 * @param {Array<[string, number, number] | [string, number]>} options
+	 */
 	#setup(options) {
 		for (const [type, option, arg] of options) {
 
 			switch (type) {
 				case 'raw':
+					/** @ts-ignore */
 					this.uinput.control(option, arg);
 					break;
-				case 'type': {
+				case 'event-type': {
+					/** @ts-ignore */
 				 this.uinput.event.type(option);
 				 break;
 				}
 				case 'event': {
-					this.uinput.event.event(option[0], option[1]);
+					/** @ts-ignore */
+					this.uinput.event.event(option, arg);
 					break;
 			 }
 
@@ -60,17 +82,25 @@ class Device {
 		}
 	}
 
+	/**
+	 * @param {Record<string, Event>} events
+	 * @return {Array<OptionTuple>}
+	 */
 	static eventsToOptions = (events) => {
 		const eventsList = Object.values(events);
 
-		return Array.from(eventsList
-			.reduce((types, [typeId]) => {
-				types.add(typeId);
+		const typeOpts = Array.from(eventsList
+			.reduce((types, [type]) => {
+				types.add(type);
 				return types;
 			}, new Set()),
-       (typeId) => ['type', typeId]
-		)
-			.concat(eventsList.map((event) => ['event', event]))
+       (type) => ['event-type', type]
+		);
+
+		const eventOpts = eventsList.map((event) => ['event', event[0], event[1]]);
+
+		/** @ts-ignore */
+		return typeOpts.concat(eventOpts);
 	}
 }
 

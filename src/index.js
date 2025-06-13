@@ -1,4 +1,4 @@
-export { default as UInput } from './UInput.js';
+export { default as UInput } from './models/UInput.js';
 
 export { Device } from './presets/index.js';
 

@@ -1,13 +1,13 @@
-import UInput from '../UInput.js';
+import UInput from '../models/UInput.js';
 import Device from './Device.js';
 
-/* @typedef {import('./Device.js').IEvent} IEvent */
+/** @typedef {import('./Device.js').Event} Event */
 
 const T = UInput.Event.TYPES;
-const { KEY } = UInput.Event.EVENTS;
+const { KEY } = UInput.Event.CODES;
 
 /**
- * @enum {IEvent}
+ * @type {Record<string, Event>}
  */
 const EVENTS = {
 	KEY_HELP:
@@ -95,9 +95,11 @@ const EVENTS = {
 		[T.KEY, KEY.KEY_BRIGHTNESSDOWN],
 	KEY_BRIGHTNESSUP:
 		[T.KEY, KEY.KEY_BRIGHTNESSUP],
+};
 
-}
-
+/**
+ * @description virtual media keyboard
+ */
 class Media extends Device {
 	static EVENTS = EVENTS;
 

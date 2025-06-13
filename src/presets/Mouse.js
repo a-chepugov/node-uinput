@@ -1,13 +1,13 @@
-import UInput from '../UInput.js';
+import UInput from '../models/UInput.js';
 import Device from './Device.js';
 
-/* @typedef {import('./Device.js').IEvent} IEvent */
+/** @typedef {import('./Device.js').Event} Event */
 
 const T = UInput.Event.TYPES;
-const { KEY, REL } = UInput.Event.EVENTS;
+const { KEY, REL } = UInput.Event.CODES;
 
 /**
- * @enum {IEvent}
+ * @type {Record<string, Event>}
  */
 const EVENTS = {
 	BTN_LEFT:
@@ -33,8 +33,11 @@ const EVENTS = {
 		[T.REL, REL.REL_WHEEL],
 	REL_HWHEEL:
 		[T.REL, REL.REL_HWHEEL],
-}
+};
 
+/**
+ * @description virtual mouse
+ */
 class Mouse extends Device {
 	static EVENTS = EVENTS;
 

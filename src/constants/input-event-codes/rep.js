@@ -1,4 +1,5 @@
-/** @namespace * Autorepeat values
+/** @namespace
+ * Autorepeat values
  */
 
 export const REP_DELAY = 0x00;

@@ -1,21 +1,20 @@
 import ref from 'ref-napi';
 import Struct from 'ref-struct-napi';
 import ArrayType from 'ref-array-napi';
-import libc from './lib/libc.js';
+import libc from '../lib/libc.js';
 
-import * as UINPUT from './constants/uinput.js';
+import * as UINPUT from '../constants/uinput.js';
 
-// Типы
+//-----------------------------------------------
+
 const int32 = ref.types.int32;
 const uint16 = ref.types.uint16;
 const uint32 = ref.types.uint32;
 const char = ref.types.char;
 
-// Массивы
 const CharArray80 = ArrayType(char, 80);
 const Int32Array64 = ArrayType(int32, 64);
 
-//-----------------------------------------------
 
 const UInputDevIDStruct = Struct({
 	bustype: uint16,
@@ -24,7 +23,9 @@ const UInputDevIDStruct = Struct({
 	version: uint16,
 });
 
-const UinputUserDevStruct = Struct({
+//-----------------------------------------------
+
+const UinputDevStruct = Struct({
 	name: CharArray80,
 	id: UInputDevIDStruct,
 	ff_effects_max: uint32,
@@ -34,13 +35,35 @@ const UinputUserDevStruct = Struct({
 	absflat: Int32Array64,
 });
 
+/**
+ * @typedef {Object} UIDevSpecs
+ * @property {Object} [id]
+ * @property {number} [id.bustype]
+ * @property {number} [id.vendor]
+ * @property {number} [id.product]
+ * @property {number} [id.version]
+ * @property {number} [ff_effects_max]
+ * @property {Array<number>} [absmax]
+ * @property {Array<number>} [absmin]
+ * @property {Array<number>} [absfuzz]
+ * @property {Array<number>} [absflat]
+ */
+
 class UInputDevice {
+	/**
+	 * @param {number} fd
+	 */
 	constructor(fd) {
 		this.fd = fd;
 	}
 
-	register(dev) {
-		return libc.write(this.fd, dev.ref(), UinputUserDevStruct.size);
+	/**
+	 * @param {string} name
+	 * @param {UIDevSpecs} [specs]
+	 */
+	register(name, specs) {
+		const dev = UInputDevice.build(name, specs);
+		return libc.write(this.fd, dev.ref(), UinputDevStruct.size);
 	}
 
 	create() {
@@ -51,6 +74,12 @@ class UInputDevice {
 		return libc.ioctl(this.fd, UINPUT.UI_DEV_DESTROY, 0);
 	}
 
+	/**
+	 * @param {number} [bustype]
+	 * @param {number} [vendor]
+	 * @param {number} [product]
+	 * @param {number} [version]
+	 */
 	static id(
 		bustype = 0x03, // USB
 		vendor = 0x1234,
@@ -65,16 +94,21 @@ class UInputDevice {
 		return id;
 	}
 
+	/**
+	 * @param {string} name
+	 * @param {UIDevSpecs} [specs]
+	 */
 	static build(
 		name = 'node-virtual-input',
 		specs,
 	) {
-		const dev = new UinputUserDevStruct();
+		const dev = new UinputDevStruct();
 
 		dev.name = new CharArray80();
 		Buffer.from(name + '\0', 'ascii').copy(dev.name.buffer);
 
-		dev.id = UInputDevice.id(specs?.id);
+		/** @ts-ignore */
+		dev.id = UInputDevice.id(specs.id);
 
 		dev.ff_effects_max = specs?.ff_effects_max;
 		dev.absmin = specs?.absmin ? specs.absmin : [];
@@ -84,7 +118,6 @@ class UInputDevice {
 
 		return dev;
 	}
-
 }
 
 export default UInputDevice;
