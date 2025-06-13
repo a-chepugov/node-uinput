@@ -1,0 +1,56 @@
+env:
+  browser: true
+  node: true
+  es2021: true
+  jest: true
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+parser: "@typescript-eslint/parser"
+parserOptions:
+  ecmaVersion: 2021
+  sourceType: module
+plugins:
+  - "@typescript-eslint"
+  - import
+rules:
+  "@typescript-eslint/ban-types": off
+  "@typescript-eslint/ban-ts-comment": off
+  "@typescript-eslint/no-explicit-any": off
+  "@typescript-eslint/no-unused-vars": error
+  comma-dangle: [error, {
+    arrays: always-multiline,
+    objects: always-multiline,
+    functions: never,
+    imports: never,
+    exports: never,
+    }]
+  "import/extensions": [error, always]
+  indent: [error, tab]
+  max-len: [error, { code: 200 }]
+  object-property-newline: [off]
+  operator-linebreak: [error, before]
+  no-new-func: off
+  no-tabs: off
+  no-unused-vars: off
+#  no-unused-vars: [error, {
+#    vars: all,
+#    args: after-used,
+#    ignoreRestSiblings: false,
+#    }]
+  require-jsdoc: [warn, {
+    require: {
+      ClassDeclaration: true,
+      MethodDefinition: false,
+      FunctionExpression: false,
+      FunctionDeclaration: false,
+      ArrowFunctionExpression: false,
+    }
+  }]
+  semi: [error, always]
+  space-before-function-paren: [error, {
+    anonymous: never,
+    named: never,
+    asyncArrow: always,
+    }]

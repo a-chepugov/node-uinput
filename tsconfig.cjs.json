@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "build/cjs",
+    "module": "commonjs",
+    "noEmit": false,
+    "declaration": false
+  }
+}
