@@ -240,7 +240,7 @@ export const KEY_BRIGHTNESSDOWN = 224;
 export const KEY_BRIGHTNESSUP = 225;
 export const KEY_MEDIA = 226;
 
-export const KEY_SWITCHVIDEOMODE = 227	/* Cycle between available video;
+export const KEY_SWITCHVIDEOMODE = 227;	/* Cycle between available video;
 					   outputs (Monitor/LCD/TV-out/etc) */
 export const KEY_KBDILLUMTOGGLE = 228;
 export const KEY_KBDILLUMDOWN = 229;
@@ -263,7 +263,7 @@ export const KEY_UNKNOWN = 240;
 export const KEY_VIDEO_NEXT = 241	/* drive next video source */;
 export const KEY_VIDEO_PREV = 242	/* drive previous video source */;
 export const KEY_BRIGHTNESS_CYCLE = 243	/* brightness up, after max is min */;
-export const KEY_BRIGHTNESS_AUTO = 244	/* Set Auto Brightness: manual;
+export const KEY_BRIGHTNESS_AUTO = 244;	/* Set Auto Brightness: manual;
 					  brightness control is off,
 					  rely on ambient */
 export const KEY_BRIGHTNESS_ZERO = KEY_BRIGHTNESS_AUTO;

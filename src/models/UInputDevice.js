@@ -49,6 +49,9 @@ const UinputDevStruct = Struct({
  * @property {Array<number>} [absflat]
  */
 
+/**
+ * @desription group of UInput device methods
+ */
 class UInputDevice {
 	/**
 	 * @param {number} fd
@@ -84,7 +87,7 @@ class UInputDevice {
 		bustype = 0x03, // USB
 		vendor = 0x1234,
 		product = 0x5678,
-		version = 1,
+		version = 1
 	) {
 		const id = new UInputDevIDStruct();
 		id.bustype = bustype;
@@ -100,7 +103,7 @@ class UInputDevice {
 	 */
 	static build(
 		name = 'node-virtual-input',
-		specs,
+		specs
 	) {
 		const dev = new UinputDevStruct();
 

@@ -40,14 +40,14 @@ class Device {
 	 */
 	act = (event, value) => {
 		return this.uinput.act(event[0], event[1], value);
-	}
+	};
 
 	/**
 	 * @param {Array<[Event, number]>} list
 	 */
 	frame = (list) => {
 		return this.uinput.frame(list.map(([event, data]) => [event[0], event[1], data]));
-	}
+	};
 
 	destructor() {
 		this.uinput.device.destroy();
@@ -61,23 +61,23 @@ class Device {
 		for (const [type, option, arg] of options) {
 
 			switch (type) {
-				case 'raw':
-					/** @ts-ignore */
-					this.uinput.control(option, arg);
-					break;
-				case 'event-type': {
-					/** @ts-ignore */
-				 this.uinput.event.type(option);
-				 break;
-				}
-				case 'event': {
-					/** @ts-ignore */
-					this.uinput.event.event(option, arg);
-					break;
-			 }
+			case 'raw':
+				/** @ts-ignore */
+				this.uinput.control(option, arg);
+				break;
+			case 'event-type': {
+				/** @ts-ignore */
+				this.uinput.event.type(option);
+				break;
+			}
+			case 'event': {
+				/** @ts-ignore */
+				this.uinput.event.event(option, arg);
+				break;
+			}
 
-				default:
-					throw new Error('invalid feature type ' + type);
+			default:
+				throw new Error('invalid feature type ' + type);
 			}
 		}
 	}
@@ -94,14 +94,14 @@ class Device {
 				types.add(type);
 				return types;
 			}, new Set()),
-       (type) => ['event-type', type]
+		(type) => ['event-type', type]
 		);
 
 		const eventOpts = eventsList.map((event) => ['event', event[0], event[1]]);
 
 		/** @ts-ignore */
 		return typeOpts.concat(eventOpts);
-	}
+	};
 }
 
 export default Device;

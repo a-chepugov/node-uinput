@@ -10,4 +10,4 @@ export default {
 	Media: presets.Media,
 	Touchscreen: presets.Touchscreen,
 	Graphic: presets.Graphic,
-}
+};

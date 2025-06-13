@@ -12,6 +12,9 @@ const UINPUT_PATH = '/dev/uinput';
 const O_WRONLY = 0x01;
 const O_NONBLOCK = 0x800;
 
+/**
+ * @desription UInput controller
+ */
 class UInput {
 	constructor(path = UINPUT_PATH, flags = O_WRONLY | O_NONBLOCK) {
 		this.fd = libc.open(path, flags);
@@ -49,11 +52,11 @@ class UInput {
 	add = (type, code, value) => {
 		/** @ts-ignore */
 		return this.event.emit(type, code, value);
-	}
+	};
 
 	sync = () => {
 		return this.event.emit(UInputEvent.TYPES.SYN, UInputEvent.CODES.SYN.SYN_REPORT, 0);
-	}
+	};
 
 	/**
 	 * @param {TYPE} type
@@ -63,17 +66,17 @@ class UInput {
 	act = (type, code, value) => {
 		this.add(type, code, value);
 		return this.sync();
-	}
+	};
 
 	/**
 	 * @param {Array<[TYPE, CODE, number]>} list
 	 */
 	frame = (list) => {
 		for (const item of list) {
-			this.add(item[0], item[1], item[2])
+			this.add(item[0], item[1], item[2]);
 		}
 		return this.sync();
-	}
+	};
 
 	static Device = UInputDevice;
 	static Event = UInputEvent;

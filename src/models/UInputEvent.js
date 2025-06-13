@@ -73,6 +73,9 @@ const UI_SET_BITS = {
 	[TYPES.SW ]: UINPUT.UI_SET_SWBIT,
 };
 
+/**
+ * @desription group UInput event methods
+ */
 class UInputEvent {
 	/** @param {number} fd */
 	constructor(fd) {
@@ -111,7 +114,7 @@ class UInputEvent {
 	emit = (type, code, value) => {
 		const ev = UInputEvent.build(type, code, value);
 		return libc.write(this.fd, ev.ref(), InputEventStruct.size);
-	}
+	};
 
 	/**
 	 * @param {TYPES} type

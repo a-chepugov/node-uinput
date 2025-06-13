@@ -5,7 +5,7 @@
 export const SW_LID = 0x00  /* set = lid shut */;
 export const SW_TABLET_MODE = 0x01  /* set = tablet mode */;
 export const SW_HEADPHONE_INSERT = 0x02  /* set = inserted */;
-export const SW_RFKILL_ALL = 0x03  /* rfkill master switch, type "any";
+export const SW_RFKILL_ALL = 0x03;  /* rfkill master switch, type "any";
 					 set = radio enabled */
 export const SW_RADIO = SW_RFKILL_ALL	/* deprecated */;
 export const SW_MICROPHONE_INSERT = 0x04  /* set = inserted */;

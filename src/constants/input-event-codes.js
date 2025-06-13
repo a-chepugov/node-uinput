@@ -14,7 +14,7 @@ export * as LED from './input-event-codes/led.js';
 export * as SND from './input-event-codes/snd.js';
 export * as REP from './input-event-codes/rep.js';
 
-import * as EV from './input-event-codes/ev.js';
+/** @typedef {import('./input-event-codes/ev.js')} EV*/
 /** @typedef {typeof EV[keyof typeof EV]} TYPE */
 
 /** @typedef {number} CODE */
