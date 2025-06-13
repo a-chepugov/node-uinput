@@ -36,11 +36,12 @@ const EVENTS = {
 }
 
 class Mouse extends Device {
-	constructor(name = 'node-virtual-mouse') {
-		super(EVENTS, name);
-	}
-
 	static EVENTS = EVENTS;
+
+	constructor(name = 'node-virtual-mouse') {
+		const options = Device.eventsToOptions(EVENTS);
+		super(options, name);
+	}
 }
 
 export default Mouse;

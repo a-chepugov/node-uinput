@@ -4,26 +4,18 @@ import UInput from '../UInput.js';
 
 class Device {
 	/**
-	 * @param {{ [key: string]: IEvent }} events
+	 * @param {} options
 	 * @param {string} name
-	 * @param {string} name
+	 * @param {} specs
 	 */
-	constructor(events, name, specs) {
+	constructor(options, name, specs) {
 		const uinput = new UInput();
-
-		Object
-			.values(events)
-			.map(([typeId, eventId]) => {
-				uinput.Event.type(typeId);
-				uinput.Event.event(typeId, eventId);
-			})
-
-		uinput.Device.register(UInput.Device.build(
-			name,
-			specs,
-		));
-		uinput.Device.create();
 		this.uinput = uinput;
+
+		this.#setup(options);
+
+		uinput.device.register(UInput.Device.build(name, specs));
+		uinput.device.create();
 	}
 
 	/**
@@ -37,13 +29,48 @@ class Device {
 	/**
 	 * @param {Array<[IEvent, number]>} data
 	 */
-	frame(data) {
-		return this.uinput.frame(data.map(([event, value]) => [event[0], event[1], value]));
+	frame(list) {
+		return this.uinput.frame(list.map(([event, data]) => [event[0], event[1], data]));
 	}
 
 	destructor() {
-		this.uinput.Device.destroy();
+		this.uinput.device.destroy();
 		return this.uinput.close();
+	}
+
+	#setup(options) {
+		for (const [type, option, arg] of options) {
+
+			switch (type) {
+				case 'raw':
+					this.uinput.control(option, arg);
+					break;
+				case 'type': {
+				 this.uinput.event.type(option);
+				 break;
+				}
+				case 'event': {
+					this.uinput.event.event(option[0], option[1]);
+					break;
+			 }
+
+				default:
+					throw new Error('invalid feature type ' + type);
+			}
+		}
+	}
+
+	static eventsToOptions = (events) => {
+		const eventsList = Object.values(events);
+
+		return Array.from(eventsList
+			.reduce((types, [typeId]) => {
+				types.add(typeId);
+				return types;
+			}, new Set()),
+       (typeId) => ['type', typeId]
+		)
+			.concat(eventsList.map((event) => ['event', event]))
 	}
 }
 

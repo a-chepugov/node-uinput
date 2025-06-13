@@ -1,5 +1,5 @@
 /**
- * /include/uapi/linux/uinput.h
+ * include/uapi/linux/uinput.h
  */
 
 /* Set absolute axis information for the device to setup */

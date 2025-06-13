@@ -99,11 +99,12 @@ const EVENTS = {
 }
 
 class Media extends Device {
-	constructor(name = 'node-virtual-media-keys') {
-		super(EVENTS, name);
-	}
-
 	static EVENTS = EVENTS;
+
+	constructor(name = 'node-virtual-media-keys') {
+		const options = Device.eventsToOptions(EVENTS);
+		super(options, name);
+	}
 }
 
 export default Media;

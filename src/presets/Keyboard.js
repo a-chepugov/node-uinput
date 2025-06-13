@@ -251,11 +251,12 @@ const EVENTS = {
 	}
 
 class Keyboard extends Device {
-	constructor(name = 'node-virtual-keyboard') {
-		super(EVENTS, name);
-	}
-
 	static EVENTS = EVENTS;
+
+	constructor(name = 'node-virtual-keyboard') {
+		const options = Device.eventsToOptions(EVENTS);
+		super(options, name);
+	}
 }
 
 export default Keyboard;

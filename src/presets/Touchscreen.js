@@ -28,7 +28,11 @@ const EVENTS = {
 }
 
 class Touchscreen extends Device {
+	static EVENTS = EVENTS;
+
 	constructor(name = 'node-virtual-touchscreen') {
+		const options = Device.eventsToOptions(EVENTS);
+
 		const specs = {
 			absmin: [],
 			absmax: [],
@@ -39,10 +43,8 @@ class Touchscreen extends Device {
 		specs.absmin[ABS.ABS_Y] = 0;
 		specs.absmax[ABS.ABS_Y] = 720;
 
-		super(EVENTS, name, specs);
+		super(options, name, specs);
 	}
-
-	static EVENTS = EVENTS;
 }
 
 export default Touchscreen;

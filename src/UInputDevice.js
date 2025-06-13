@@ -3,7 +3,7 @@ import Struct from 'ref-struct-napi';
 import ArrayType from 'ref-array-napi';
 import libc from './lib/libc.js';
 
-import * as UI from './constants/uinput.js';
+import * as UINPUT from './constants/uinput.js';
 
 // Типы
 const int32 = ref.types.int32;
@@ -44,11 +44,11 @@ class UInputDevice {
 	}
 
 	create() {
-		return libc.ioctl(this.fd, UI.UI_DEV_CREATE, 0);
+		return libc.ioctl(this.fd, UINPUT.UI_DEV_CREATE, 0);
 	}
 
 	destroy() {
-		return libc.ioctl(this.fd,UI.UI_DEV_DESTROY, 0);
+		return libc.ioctl(this.fd, UINPUT.UI_DEV_DESTROY, 0);
 	}
 
 	static id(
@@ -66,7 +66,7 @@ class UInputDevice {
 	}
 
 	static build(
-		name = 'node-input',
+		name = 'node-virtual-input',
 		specs,
 	) {
 		const dev = new UinputUserDevStruct();

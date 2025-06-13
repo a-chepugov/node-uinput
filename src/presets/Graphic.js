@@ -51,7 +51,14 @@ const EVENTS = {
 }
 
 class Graphic extends Device {
+	static EVENTS = EVENTS;
+
 	constructor(name = 'node-virtual-graphic-tablet') {
+		const options = Device.eventsToOptions(EVENTS)
+		.concat([
+			['raw', UInput.UINPUT.UI_SET_PROPBIT, UInput.INPUT_EVENT_CODES.PROP.INPUT_PROP_DIRECT]
+		]);
+
 		const specs = {
 			absmin: [],
 			absmax: [],
@@ -70,10 +77,8 @@ class Graphic extends Device {
 		specs.absmin[ABS.ABS_TILT_Y] = -127;
 		specs.absmax[ABS.ABS_TILT_Y] = 127;
 
-		super(EVENTS, name, specs);
+		super(options, name, specs);
 	}
-
-	static EVENTS = EVENTS;
 }
 
 export default Graphic;

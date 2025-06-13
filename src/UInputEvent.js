@@ -36,7 +36,6 @@ const UI_SET_BITS = {
 	LED: UINPUT.UI_SET_LEDBIT,
 	SND: UINPUT.UI_SET_SNDBIT,
 	SW : UINPUT.UI_SET_SWBIT,
-	PROP:UINPUT.UI_SET_PROPBIT,
 };
 
 /**
@@ -69,7 +68,6 @@ const EVENTS = {
 	LED: INPUT_EVENT_CODES.LED,
 	SND: INPUT_EVENT_CODES.SND,
 	SW : INPUT_EVENT_CODES.SW,
-	PROP:INPUT_EVENT_CODES.PROP,
 };
 
 
@@ -133,7 +131,6 @@ class UInputEvent {
 
 	static TYPES = TYPES;
 	static EVENTS = EVENTS;
-	static UI_SET_BITS = UI_SET_BITS;
 }
 
 export default UInputEvent;

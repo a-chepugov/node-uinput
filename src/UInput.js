@@ -1,5 +1,8 @@
 import libc from './lib/libc.js';
 
+import * as UINPUT from './constants/uinput.js';
+import * as INPUT_EVENT_CODES from './constants/input-event-codes.js';
+
 import UInputEvent from './UInputEvent.js';
 import UInputDevice from './UInputDevice.js';
 
@@ -7,20 +10,21 @@ const UINPUT_PATH = '/dev/uinput';
 const O_WRONLY = 0x01;
 const O_NONBLOCK = 0x800;
 
+
 class UInput {
 	constructor(path = UINPUT_PATH, flags = O_WRONLY | O_NONBLOCK) {
 		this.fd = libc.open(path, flags);
 		if (this.fd < 0) throw new Error(path + ' - no access or root permissions available');
 
-		this.Device = new UInputDevice(this.fd);
-		this.Event = new UInputEvent(this.fd);
+		this.event = new UInputEvent(this.fd);
+		this.device = new UInputDevice(this.fd);
 	}
 
 	close() {
 		return libc.close(this.fd);
 	}
 
-	config(req, arg) {
+	control(req, arg) {
 		return libc.ioctl(this.fd, req, arg);
 	}
 
@@ -28,33 +32,31 @@ class UInput {
 		return libc.write(this.fd, ref, size);
 	}
 
-	add(typeId, eventId, value) {
-		return this.Event.emit(typeId, eventId, value);
+	add(typeId, eventId, data) {
+		return this.event.emit(typeId, eventId, data);
 	}
 
 	sync() {
-		return this.Event.emit(UInputEvent.TYPES.SYN, UInputEvent.EVENTS.SYN.SYN_REPORT, 0);
+		return this.event.emit(UInputEvent.TYPES.SYN, UInputEvent.EVENTS.SYN.SYN_REPORT, 0);
 	}
 
 	act(typeId, eventId, value) {
-		const ra = this.add(typeId, eventId, value);
-		const rs = this.sync();
-		return [ra, rs];
+		this.add(typeId, eventId, value);
+		return this.sync();
 	}
 
-	frame(batch) {
-		const ra = [];
-		for (const item of batch) {
-			ra.push(
-				this.add(item[0],item[1], item[2])
-			);
+	frame(list) {
+		for (const item of list) {
+			this.add(item[0], item[1], item[2])
 		}
-		const rs = this.sync();
-		return [ra, rs];
+		return this.sync();
 	}
 
 	static Device = UInputDevice;
 	static Event = UInputEvent;
+
+	static UINPUT = UINPUT;
+	static INPUT_EVENT_CODES = INPUT_EVENT_CODES;
 }
 
 export default UInput;
